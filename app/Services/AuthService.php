@@ -11,7 +11,7 @@ class AuthService {
         return FileHelper::readFile( FilePaths::USERS );
     }
 
-    public function saveUsers( $users ): void {
+    public function saveUser( $users ): void {
         FileHelper::writeFile( FilePaths::USERS, $users );
     }
 
@@ -39,7 +39,7 @@ class AuthService {
         $hashedPassword = password_hash( $password, PASSWORD_BCRYPT );
 
         // Create the new user array
-        $newUser = [
+        $users[] = [
             'id'       => $id,
             'role'     => $role,
             'name'     => $name,
@@ -49,8 +49,7 @@ class AuthService {
         ];
 
         // Add the new user
-        $users[] = $newUser;
-        $this->saveUsers( $users );
+        $this->saveUser( $users );
     }
 
     public function authenticateUser( string $email, string $password ): array {

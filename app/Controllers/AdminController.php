@@ -42,12 +42,6 @@ class AdminController {
         return array_reverse( $this->transactionService->allTransactions() );
     }
 
-    public function getUserName( $userId ): string {
-        $user = $this->transactionService->getUserById( $userId );
-
-        return $user['name'];
-    }
-
     public function transactionsById( int $userId ): array {
         // for latest records to show first
         return array_reverse( $this->transactionService->getTransactions( $userId ) );

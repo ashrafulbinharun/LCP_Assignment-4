@@ -12,7 +12,7 @@ class TransactionService {
         return FileHelper::readFile( FilePaths::TRANSACTIONS );
     }
 
-    public function saveTransactions( array $transactions ): void {
+    public function saveTransaction( array $transactions, bool $append = false ): void {
         FileHelper::writeFile( FilePaths::TRANSACTIONS, $transactions );
     }
 
@@ -83,7 +83,7 @@ class TransactionService {
         ];
 
         // Save the updated transactions array
-        $this->saveTransactions( $transactions );
+        $this->saveTransaction( $transactions );
     }
 
     public function deposit( int $userId, int | float $amount ): void {
