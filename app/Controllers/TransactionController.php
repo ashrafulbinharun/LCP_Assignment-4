@@ -11,8 +11,8 @@ use Exception;
 class TransactionController {
     use FormTraits;
 
-    protected TransactionService $transactionService;
-    protected TransactionRequest $transactionRequest;
+    private TransactionService $transactionService;
+    private TransactionRequest $transactionRequest;
 
     public function __construct() {
         $this->transactionService = new TransactionService();

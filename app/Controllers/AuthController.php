@@ -11,8 +11,8 @@ use Exception;
 class AuthController {
     use FormTraits;
 
-    protected AuthService $authService;
-    protected AuthRequest $authRequest;
+    private AuthService $authService;
+    private AuthRequest $authRequest;
 
     public function __construct() {
         $this->authService = new AuthService();

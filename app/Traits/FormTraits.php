@@ -3,8 +3,8 @@
 namespace App\Traits;
 
 trait FormTraits {
-    protected array $errors = [];
-    protected array $oldInput = [];
+    private array $errors = [];
+    private array $oldInput = [];
 
     public function getPostData( array $fields ): array {
         $data = [];

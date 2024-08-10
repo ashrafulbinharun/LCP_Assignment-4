@@ -68,6 +68,9 @@ class TransactionService {
     }
 
     public function recordTransaction( int $userId, string $type, int | float $amount ): void {
+        // Bangladesh Timezone
+        date_default_timezone_set( 'Asia/Dhaka' );
+
         $transactions = $this->allTransactions();
 
         // Generate a new unique ID for the transaction
@@ -91,8 +94,7 @@ class TransactionService {
 
         // Update the user's balance and record the transaction
         $user['balance'] += $amount;
-        $this->updateUserBalance( $userId, $user['balance'] );
-        $this->recordTransaction( $userId, TransactionTypes::DEPOSIT, $amount );
+        $this->updateBalanceAndSaveRecord( $userId, $user['balance'], TransactionTypes::DEPOSIT, $amount );
     }
 
     public function withdraw( int $userId, int | float $amount ): void {
@@ -104,8 +106,7 @@ class TransactionService {
 
         // Update the user's balance and record the transaction
         $user['balance'] -= $amount;
-        $this->updateUserBalance( $userId, $user['balance'] );
-        $this->recordTransaction( $userId, TransactionTypes::WITHDRAW, $amount );
+        $this->updateBalanceAndSaveRecord( $userId, $user['balance'], TransactionTypes::WITHDRAW, $amount );
     }
 
     public function transfer( int $senderId, string $receiverEmail, int | float $amount ): void {
@@ -120,9 +121,12 @@ class TransactionService {
         $sender['balance'] -= $amount;
         $receiver['balance'] += $amount;
 
-        $this->updateUserBalance( $senderId, $sender['balance'] );
-        $this->updateUserBalance( $receiver['id'], $receiver['balance'] );
-        $this->recordTransaction( $senderId, TransactionTypes::TRANSFER, $amount );
-        $this->recordTransaction( $receiver['id'], TransactionTypes::RECEIVE, $amount );
+        $this->updateBalanceAndSaveRecord( $senderId, $sender['balance'], TransactionTypes::TRANSFER, $amount );
+        $this->updateBalanceAndSaveRecord( $receiver['id'], $receiver['balance'], TransactionTypes::RECEIVE, $amount );
+    }
+
+    private function updateBalanceAndSaveRecord( int $userId, int | float $balance, string $type, int | float $amount ): void {
+        $this->updateUserBalance( $userId, $balance );
+        $this->recordTransaction( $userId, $type, $amount );
     }
 }
